@@ -44,6 +44,13 @@ public class Table {
         return "Table{" + "name=" + name + ", attributes=" + attributes + '}';
     }
     
-    
+    public String toNameTable(){
+        String[] names = this.getName().toLowerCase().split("_");
+        String nameTable = "";
+        for (int i = 0; i < names.length ; i++) {
+            nameTable += names[i].substring(0, 1).toUpperCase() + names[i].substring(1).toLowerCase();
+        }
+        return nameTable;
+    }
     
 }

@@ -67,7 +67,7 @@ public class Attribute {
         
         //
         String[] types = {"number","date","varchar2","time",};
-        String[] vars  = {"int","string","string","string",};
+        String[] vars  = {"int","String","String","String",};
         
         //String[] a = t.split("\\(");
         //String s = a[0].toLowerCase();
@@ -87,6 +87,20 @@ public class Attribute {
             return "string";
         }
         
+    }
+    
+     public String toNameAttribute(){
+        String[] names = this.getColumnName().toLowerCase().split("_");
+        String nameAttribute = "";
+        for (int i = 0; i < names.length ; i++) {
+            if(i==0){
+                 nameAttribute += names[i];
+            }else{
+                 nameAttribute += names[i].substring(0, 1).toUpperCase() + names[i].substring(1).toLowerCase();
+            }
+           
+        }
+        return nameAttribute;
     }
     
 }
