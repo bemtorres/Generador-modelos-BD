@@ -58,7 +58,7 @@ public class Conexion {
         ArrayList<Table> listTables = new ArrayList<>();
         stm = conn.createStatement();
         try {
-            String query = "select table_name from USER_TABLES";
+            String query = "SELECT table_name FROM USER_TABLES";
             ResultSet rs = stm.executeQuery(query);
             while (rs.next()) {
                 String nameTable = rs.getString("table_name");

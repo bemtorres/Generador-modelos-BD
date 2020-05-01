@@ -49,6 +49,12 @@ public class Attribute {
         this.nullable = nullable;
     }
 
+    /**
+    * Retorna el tipo de datos de Java String, Int
+    * @author Bemtorres
+    * @param  null
+    * @return String: tipo de dato String, Int
+    */
     public String getNameAttribute() {
         return nameAttribute;
     }
@@ -62,7 +68,13 @@ public class Attribute {
         return "Attribute{" + "columnName=" + columnName + ", dataType=" + dataType + ", nullable=" + nullable + ", nameAttribute=" + nameAttribute + '}';
     }
 
-    
+          
+    /**
+    * Convierte el tipo de datos primitivo de SQL a JAVA
+    * @author Bemtorres
+    * @param  this.getDataType()
+    * @return tipo de datos en String
+    */
     private String findAttribute(){
         
         //
@@ -89,7 +101,14 @@ public class Attribute {
         
     }
     
-     public String toNameAttribute(){
+        
+    /**
+    * Este metodo convierte la columna en Lower Camel Case: hola_mundo -> holaMundo
+    * @author Bemtorres
+    * @param  this.getColumnName()
+    * @return String: las primera letra en minuscula
+    */
+    public String toNameLower(){
         String[] names = this.getColumnName().toLowerCase().split("_");
         String nameAttribute = "";
         for (int i = 0; i < names.length ; i++) {
@@ -99,6 +118,21 @@ public class Attribute {
                  nameAttribute += names[i].substring(0, 1).toUpperCase() + names[i].substring(1).toLowerCase();
             }
            
+        }
+        return nameAttribute;
+    }
+    
+    /**
+    * Este metodo convierte la columna en Upper Camel Case: hola_mundo -> HolaMundo
+    * @author Bemtorres
+    * @param  this.getColumnName()
+    * @return String: las primera letra en mayuscula
+    */
+    public String toNameUpper(){
+        String[] names = this.getColumnName().toLowerCase().split("_");
+        String nameAttribute = "";
+        for (int i = 0; i < names.length ; i++) {
+            nameAttribute += names[i].substring(0, 1).toUpperCase() + names[i].substring(1).toLowerCase();
         }
         return nameAttribute;
     }
