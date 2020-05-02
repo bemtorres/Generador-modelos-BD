@@ -5,8 +5,6 @@
  */
 package Main;
 
-import Models.Attribute;
-import Models.Table;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -22,19 +20,24 @@ public class Clip {
     private ArrayList<Table> tables;
     
     private String tab = "    ";
-    private String dir = "src/Modelo/";
+    private String dirModels = "src/Modelo/";
+    private String dirQuery = "src/Query/";
+    private Query query;
+
     private String ext = ".java";
 
 
     public Clip() throws SQLException {
         Conexion conn = new Conexion();
-
+        query = new Query();
+        
         conn.getConnection();
         this.tables = conn.show();
-        conn.desconectar();
+        conn.close();
 
         for (Table xx : this.tables) {
             createModels(xx);
+            createQuery(xx);
         }
 
     }
@@ -42,7 +45,7 @@ public class Clip {
     private void createModels(Table table) {
         try {
             
-            String ruta = dir + table.toNameTable() + ext;
+            String ruta = dirModels + table.toNameTable() + ext;
             String content = "";
             int cont = table.getAttributes().size();
             
@@ -73,15 +76,26 @@ public class Clip {
                 content += tab + tab +"this."+ a.toNameLower()+" = "+a.toNameLower()+";\n";
             }        
             content += tab + "}\n\n";
-
-         
-            for (Attribute a : table.getAttributes()) {
-                
-            }
             
             for (Attribute a : table.getAttributes()) {
-                content += getGetterSetter(a);
+                content += tab + "public void set"+a.toNameUpper()+"("+ a.getNameAttribute()+" "+a.toNameLower()+") {\n";
+                content += tab + tab + "this."+a.toNameLower()+" = "+a.toNameLower()+";\n";
+                content += tab + "}\n\n";
+                content += tab + "public "+a.getNameAttribute()+" get"+a.toNameUpper()+"() {\n";
+                content += tab + tab + "return "+a.toNameLower()+";\n";
+                content += tab + "}\n\n";
             }
+           
+            content += tab + "@Override\n";
+            content += tab +"public String toString() {\n";
+            content += tab + tab +  "return \"" + table.toNameTable() + " {";
+            for (Attribute a : table.getAttributes()) {
+               content += a.toNameLower()+":\"+" + a.toNameLower()+ "+\", ";
+          
+            }
+            content += "}\";\n";
+            content += tab + "}\n";
+            
             content += "}";
 
             File file = new File(ruta);
@@ -97,21 +111,40 @@ public class Clip {
         }
     }
     
-    
-    private String getContructor(Attribute a){
-        
-        String out = "";
-        return out;
-    }
-    
-    private String getGetterSetter(Attribute a){
-        String out = "";
-        out += tab + "public void set"+a.toNameUpper()+"("+ a.getNameAttribute()+" "+a.toNameLower()+") {\n";
-        out += tab + tab + "this."+a.toNameLower()+" = "+a.toNameLower()+";\n";
-        out += tab + "}\n\n";
-        out += tab + "public "+a.getNameAttribute()+" get"+a.toNameUpper()+"() {\n";
-        out += tab + tab + "return "+a.toNameLower()+";\n";
-        out += tab + "}\n\n";
-        return out;
+    private void createQuery(Table table){
+          try {
+            
+            String ruta = dirQuery + table.toNameTable() + ".sql";
+            String content = "";
+            
+            int cont = table.getAttributes().size();
+            content +="\n\n";
+            content += "-- Tablas de " + table.toNameTable() + "\n\n";
+            String nombre = "";
+            for (Attribute a : table.getAttributes()) {
+                nombre = a.getColumnName();
+                break;
+            }
+            content += query.buscarTabla(table.getName(), nombre,nombre)+"\n";
+            content += query.buscarTodosTabla(table.getName()) + "\n";
+            content += query.insertarTabla(table.getName(), table.getAttributes()) + "\n";
+            content += query.updateTabla(table.getName(), table.getAttributes()) + "\n";
+            content += query.eliminarTabla(table.getName(),nombre,nombre) + "\n";
+            
+            content += "\n\n\n-- PROCEDIMIENTOS --\n\n";
+            content += query.createProcedimiento(table)+"\n";
+            //content += "public class "+ table.toNameTable() +"\n\n";
+
+            File file = new File(ruta);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(content);
+            bw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

@@ -5,8 +5,6 @@
  */
 package Main;
 
-import Models.Attribute;
-import Models.Table;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -21,8 +19,8 @@ import java.util.ArrayList;
 public class Conexion {
 
     private static Connection conn;
-    private static final String USER = "P1";
-    private static final String PASSWORD = "P1";
+    private static final String USER = "HR";
+    private static final String PASSWORD = "HR";
     private static final String host = "localhost";
     private static final String port = "1521";
     private static final String CONN = "jdbc:oracle:thin:@" + host + ":" + port + ":XE";
@@ -50,7 +48,7 @@ public class Conexion {
         return conn;
     }
 
-    public void desconectar() {
+    public void close() {
         conn = null;
     }
 
@@ -83,8 +81,11 @@ public class Conexion {
             while (rs.next()) {
 
                 String columnName = rs.getString("COLUMN_NAME");
-                String dataType = rs.getString("DATA_TYPE");
-                Attribute attribute = new Attribute(columnName, dataType, false);
+                String dataType   = rs.getString("DATA_TYPE");
+                //int[] dataPrecision = rs.getInt("DATA_PRESION");
+                int[] dataScale   = {rs.getInt("DATA_PRECISION"),rs.getInt("DATA_SCALE")};
+                
+                Attribute attribute = new Attribute(columnName, dataType, false,dataScale);
                 listAttribute.add(attribute);
             }
         } catch (Exception ex) {

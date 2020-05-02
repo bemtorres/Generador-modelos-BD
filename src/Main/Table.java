@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Models;
+package Main;
 
+import Main.Attribute;
 import java.util.ArrayList;
 
 /**
@@ -44,6 +45,12 @@ public class Table {
         return "Table{" + "name=" + name + ", attributes=" + attributes + '}';
     }
     
+    
+    /**
+    * Este metodo convierte la columna en Lower Camel Case: hola_mundo -> holaMundo
+    * @author Bemtorres
+    * @return String: las primera letra en minuscula
+    */
     public String toNameTable(){
         String[] names = this.getName().toLowerCase().split("_");
         String nameTable = "";
