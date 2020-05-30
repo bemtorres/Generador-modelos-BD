@@ -19,15 +19,16 @@ public class Clip {
 
     private ArrayList<Table> tables;
     
-    private String tab = "    ";
+    private String tab = "  ";
     private String dirModels = "src/Modelo/";
     private String dirQuery = "src/Query/";
+    private String dirCruds = "src/CrudSQL/";
     private Query query;
 
     private String ext = ".java";
 
 
-    public Clip() throws SQLException {
+    public Clip(boolean models, boolean queries, boolean crudSql) throws SQLException {
         Conexion conn = new Conexion();
         query = new Query();
         
@@ -36,9 +37,11 @@ public class Clip {
         conn.close();
 
         for (Table xx : this.tables) {
-            createModels(xx);
-            createQuery(xx);
+            if(models) createModels(xx);
+            if(queries) createQuery(xx);
+            if(crudSql) createCrudSQL(xx);
         }
+        
 
     }
 
@@ -143,6 +146,55 @@ public class Clip {
             BufferedWriter bw = new BufferedWriter(fw);
             bw.write(content);
             bw.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+    
+    private void createCrudSQL(Table table){
+        String ruta = dirCruds + "crud_" + table.toNameTable().toLowerCase() + ".sql";
+        
+        StringBuilder content = new StringBuilder();
+        
+        content.append(CrudSQL.PackageHeader(table));
+        
+        content.append(CrudSQL.InsertHeader(table));
+        content.append(";\n");
+        content.append(CrudSQL.UpdateHeader(table));
+        content.append(";\n");
+        content.append(CrudSQL.DeleteHeader(table));
+        content.append(";\n");
+        content.append(CrudSQL.ReadHeader(table));
+        content.append(";\n");
+        content.append(CrudSQL.ReadAllHeader());
+        content.append(";\n");
+        
+        content.append("\nend crud_");
+        content.append(table.getName().toLowerCase());
+        content.append(";\n/\n");
+        
+        content.append(CrudSQL.PackageBody(table));
+        
+        content.append(CrudSQL.InsertBody(table));
+        content.append(CrudSQL.UpdateBody(table));
+        content.append(CrudSQL.DeleteBody(table));
+        content.append(CrudSQL.ReadBody(table));
+        content.append(CrudSQL.ReadAllBody(table));
+        
+        content.append("\nend crud_");
+        content.append(table.getName().toLowerCase());
+        content.append(";");
+        
+        try {
+            File file = new File(ruta);
+            if (!file.exists()) {
+                file.createNewFile();
+            }
+            FileWriter fw = new FileWriter(file);
+            BufferedWriter bw = new BufferedWriter(fw);
+            bw.write(content.toString());
+            bw.close();
+            System.out.println(ruta+" creado :D");
         } catch (Exception e) {
             e.printStackTrace();
         }
