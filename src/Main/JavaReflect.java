@@ -18,8 +18,7 @@ public class JavaReflect {
      */
     public static void main(String[] args) throws SQLException {
         
-        Clip clip = new Clip();
-        
+        Clip clip = new Clip(false,false,true);
         
     }
     

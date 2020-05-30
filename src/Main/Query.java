@@ -104,6 +104,48 @@ public class Query {
         return "DELETE * FROM " + nombreTabla + " WHERE " + column + "=" + data + ";";    
     }
     
+    public String createFunction(Table tabla){
+        String query  = "";
+        String tab = "    ";
+        query += "CREATE OR REPLACE FUNCTION f_create_"+tabla.getName().toLowerCase();
+        query += "(";
+        int x = 0;
+        for (Attribute a: tabla.getAttributes()) {
+            query += "v_"+a.getColumnName().toLowerCase() + " " + a.getDataType();
+            if(x<tabla.getAttributes().size()-1){
+                query +=",";
+                x++;
+            }
+        }
+        query += ") RETURN NUMBER\n";
+        query += "AS \n  NEW_ID INT:=0;\nBEGIN \nNEW_ID := "+tabla.getName().toLowerCase()+"_seq.nextval;\n ";
+        
+        query += "INSERT INTO "+tabla.toNameTable()+" (";
+        x = 0;
+        for (Attribute a: tabla.getAttributes()) {
+            query += a.getColumnName();
+            if(x<tabla.getAttributes().size()-1){
+                query +=",";
+            }
+            x++;
+        }
+        query += ") VALUES (";
+        
+        x = 0;
+        for (Attribute a: tabla.getAttributes()) {
+            query += "v_"+a.getColumnName().toLowerCase();
+            if(x<tabla.getAttributes().size()-1){
+                query +=",";
+            }
+            x++;
+        }
+       
+        query += ");";
+        query += tab + "";
+        query += "\n RETURN NEW_ID;\nEND;\n";
+        return query;
+    }
+    
     public String createProcedimiento(Table tabla){
         String query  = "";
         String tab = "    ";

@@ -19,11 +19,11 @@ import java.util.ArrayList;
 public class Conexion {
 
     private static Connection conn;
-    private static final String USER = "HR";
-    private static final String PASSWORD = "HR";
-    private static final String host = "localhost";
-    private static final String port = "1521";
-    private static final String CONN = "jdbc:oracle:thin:@" + host + ":" + port + ":XE";
+    private static String USER = "turismoreal";
+    private static String PASSWORD = "portafolio2020";
+    private static String host = "www.cittsb.cl";
+    private static String port = "1521";
+    private static String CONN = "jdbc:oracle:thin:@" + host + ":" + port + ":XE";
 
     Statement stm;
 
