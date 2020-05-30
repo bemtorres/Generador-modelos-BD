@@ -19,9 +19,9 @@ import java.util.ArrayList;
 public class Conexion {
 
     private static Connection conn;
-    private static String USER = "turismoreal";
-    private static String PASSWORD = "portafolio2020";
-    private static String host = "www.cittsb.cl";
+    private static String USER = "";
+    private static String PASSWORD = "";
+    private static String host = "";
     private static String port = "1521";
     private static String CONN = "jdbc:oracle:thin:@" + host + ":" + port + ":XE";
 
