@@ -28,23 +28,52 @@ public class Clip {
     private String ext = ".java";
 
 
-    public Clip(boolean models, boolean queries, boolean crudSql) throws SQLException {
-        Conexion conn = new Conexion();
-        query = new Query();
+    public Clip(boolean models, boolean queries, boolean crudSql, String DB_CONNECTION) throws SQLException {
         
-        conn.getConnection();
-        this.tables = conn.show();
-        conn.close();
-
-        for (Table xx : this.tables) {
-            if(models) createModels(xx);
-            if(queries) createQuery(xx);
-            if(crudSql) createCrudSQL(xx);
+        if(conectar(DB_CONNECTION)){
+            if(this.tables.size()>0){
+                for (Table xx : this.tables) {
+                    if(models) createModels(xx);
+                    if(queries) createQuery(xx);
+                    if(crudSql) createCrudSQL(xx);
+                }
+            }else{
+                System.err.println("No existen datos.");
+            }
+        }else{
+            System.err.println("No se ha podido establecer conexión.");
         }
-        
-
     }
 
+    
+    private boolean conectar(String DB_CONNECTION) throws SQLException{
+        boolean estado = false;
+        switch(DB_CONNECTION){
+            case "oracle":
+                ConexionOracle connOracle = new ConexionOracle();
+                query = new Query();
+                connOracle.getConnection();
+                this.tables = connOracle.show();
+                connOracle.close();
+                estado = true;
+                break;
+            case "mysql":
+                ConexionMysql connMysql = new ConexionMysql();
+                query = new Query();
+                connMysql.getConnection();
+                this.tables = connMysql.show();
+                connMysql.close();
+                estado = true;
+                break;
+           
+            default:
+                break;
+        }
+        return estado;
+
+    }
+    
+    
     private void createModels(Table table) {
         try {
             

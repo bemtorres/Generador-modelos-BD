@@ -16,12 +16,18 @@ public class Attribute {
     private String  nameAttribute;  // tipo de dato en Java
     private int[]   dataScale;
 
-    public Attribute(String columnName, String dataType, boolean nullable, int[] dataScale) {
+    public Attribute(String columnName, String dataType, boolean nullable, int[] dataScale, String typeDB) {
         this.columnName = columnName;
         this.dataType = dataType;
         this.nullable = nullable;
         this.dataScale = dataScale;
-        this.nameAttribute = this.findAttribute();
+        
+        if(typeDB.equals("oracle")){
+           this.nameAttribute = this.findAttributeOracle();
+        }else{
+            this.nameAttribute = this.findAttributeMysql();
+        }
+       
     }
 
     public Attribute() {
@@ -86,7 +92,7 @@ public class Attribute {
     * @param  this.getDataType()
     * @return tipo de datos en String
     */
-    private String findAttribute(){
+    private String findAttributeOracle(){
         
         String[] types = {"number","date","varchar2","time","char"};
         String[] vars  = {"int","String","String","String","char"};
@@ -114,6 +120,41 @@ public class Attribute {
         }
     }
     
+     /**
+    * Convierte el tipo de datos primitivo de SQL a JAVA
+    * @author Bemtorres
+    * @param  this.getDataType()
+    * @return tipo de datos en String
+    */
+    private String findAttributeMysql(){
+        
+        String[] types = {"number","int","bigint","date","varchar2","time","char","varchar","text","enum","timestamp"};
+        String[] vars  = {"int","int","int","String","String","String","char","String","String","String","String"};
+       
+        //String[] a = t.split("\\(");
+        //String s = a[0].toLowerCase();
+        String s = getDataType().toLowerCase();
+        int x = -1;
+        for (int i = 0; i < types.length ; i++) {
+            if(types[i] == null ? s == null : types[i].equals(s) ){
+                x=i;
+                break;
+            }
+        }
+        
+        if(x>-1){
+            if (vars[x].equals("int")) {  
+                if (this.dataScale[1]>0) {
+                    return "double";
+                }
+            }
+            return vars[x];
+        }else{
+            return "String";
+        }
+    }
+    
+      
         
     /**
     * Este metodo convierte la columna en Lower Camel Case: hola_mundo -> holaMundo

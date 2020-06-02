@@ -16,18 +16,20 @@ import java.util.ArrayList;
  *
  * @author mrbm
  */
-public class Conexion {
+public class ConexionOracle {
 
     private static Connection conn;
-    private static String USER = "";
-    private static String PASSWORD = "";
-    private static String host = "";
-    private static String port = "1521";
-    private static String CONN = "jdbc:oracle:thin:@" + host + ":" + port + ":XE";
+    
+    private static String USER     = "P1";
+    private static String PASSWORD = "P1";
+    private static String HOST     = "localhost";
+    private static String PORT     = "1521";
+    
+    private static String CONN     = "jdbc:oracle:thin:@" + HOST + ":" + PORT + ":XE";
 
     Statement stm;
 
-    public Conexion() {
+    public ConexionOracle() {
         conn = null;
         try {
             Class.forName("oracle.jdbc.driver.OracleDriver");
@@ -85,7 +87,7 @@ public class Conexion {
                 //int[] dataPrecision = rs.getInt("DATA_PRESION");
                 int[] dataScale   = {rs.getInt("DATA_PRECISION"),rs.getInt("DATA_SCALE")};
                 
-                Attribute attribute = new Attribute(columnName, dataType, false,dataScale);
+                Attribute attribute = new Attribute(columnName, dataType, false,dataScale,"oracle");
                 listAttribute.add(attribute);
             }
         } catch (Exception ex) {
