@@ -1,16 +1,64 @@
-Es un programa que refleja los modelos de una base de datos de **Oracle SQL** a clases de **Java**
+AUTHOR: BEMTORRES
 
-![JavaOracle](https://media.metrolatam.com/2018/01/23/javaoracle-600x400.jpg)
+Es un programa en java que refleja los modelos de una base de datos de **Oracle || MYSQL** a clases en **Java**
 
-Generado:
-- Clases y atributos
-- DAO
 
-____
-# Ver todas las tablas
-```sql
-SELECT * FROM USER_TABLES;
+## Pasos
+
+- En **src/services/database** genera tu conexión a la base de datos
+- Luego en **src/services/Main.java** configura tu conexión
+
+```java
+    // crea modelos
+    boolean createModels = true;
+
+    // crea queries
+    boolean createQueries = true;
+
+    // crea crudsql
+    boolean createCrudsSQL = true;
+
+    // seleciona tu base de datos
+    String[] databaseEngine = new String[2];
+    databaseEngine[0] = "mysql";
+    databaseEngine[1] = "oracle";
 ```
+- RUN al proyecto
+- Se crearan carpetas automaticamente del proyecto, reflejando el modelo de la base de datos
+
+## Datos generados   
+
+
+
+### Pasos realizados
+
+#### MYSQL
+
+Cuando iniciamos sesión con MYSQL podemos ocupar el comando 
+```SQL
+SHOW TABLES;
+```
+Este comando nos respondera los nombres de todas las tablas de la base de datos.
+
+Tambien podemos usar, para obtener todos los datos de una tabla
+```SQL
+DESCRIBE x_NOMBRE_TABLA_x;
+```
+
+
+#### ORACLE
+
+Cuando iniciamos sesión con ORACLE podemos ocupar el comando 
+```SQL
+SELECT table_name FROM USER_TABLES;
+``` 
+Este comando nos respondera los nombres de todas las tablas de la base de datos.
+
+Tambien podemos usar, para obtener todos los datos de una tabla
+```sql
+SELECT * FROM user_tab_columns WHERE table_name=x_NOMBRE_TABLA_x;
+```
+
 Columnas
 1. TABLE_NAME
 2. TABLESPACE_NAME
@@ -68,60 +116,5 @@ Columnas
 54. RESULT_CACHE
 
 
-Usamos la siguiente CONSULTA en CONEXION.JAVA @SHOW para solo tener nos nombres de las tablas
-```SQL
-SELECT table_name FROM USER_TABLES;
-```
-#### Retorna una tabla
-
-| TABLE_NAME |   
-|----------|
-| CIUDAD   | 
-| PAIS     |  
-| COMUNA   | 
-| etc...   | 
-
-
-
-
-___
-# Ver los atributos de cada tabla
-```SQL
-SELECT * FROM user_tab_columns WHERE table_name="name";
-```
-1. TABLE_NAME
-2. COLUMN_NAME
-3. DATA_TYPE
-4. DATA_TYPE_MOD
-5. DATA_TYPE_OWNER
-6. DATA_LENGTH
-7. DATA_PRECISION
-8. DATA_SCALE
-9. NULLABLE
-10. COLUMN_ID
-11. DEFAULT_LENGTH
-12. DATA_DEFAULT
-13. NUM_DISTINCT
-14. LOW_VALUE
-15. HIGH_VALUE
-16. DENSITY
-17. NUM_NULLS
-18. NUM_BUCKETS
-19. LAST_ANALYZED
-20. SAMPLE_SIZE
-21. CHARACTER_SET_NAME
-22. CHAR_COL_DECL_LENGTH
-23. GLOBAL_STATS
-24. USER_STATS
-25. AVG_COL_LEN
-26. CHAR_LENGTH
-27. CHAR_USED
-28. V80_FMT_IMAGE
-29. DATA_UPGRADED
-30. HISTOGRAM
-
-
-______
-#### OTRO PROYECTO
-Para PHP está https://github.com/bemtorres/PDO-Reflect
-
+#### OTRO PROYECTO CON EL MISMO PRINCIPIO EN PHP
+https://github.com/bemtorres/PDO-Reflect
