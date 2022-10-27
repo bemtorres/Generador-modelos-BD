@@ -1,7 +1,3 @@
-# Clip javareflect
-![Clip](https://cadenaser00.epimg.net/ser/imagenes/2017/03/06/ciencia/1488802140_837550_1488804775_noticia_normal.jpg)
-
-
 Es un programa que refleja los modelos de una base de datos de **Oracle SQL** a clases de **Java**
 
 ![JavaOracle](https://media.metrolatam.com/2018/01/23/javaoracle-600x400.jpg)
