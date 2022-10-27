@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Main;
+package services.databases;
 
+import services.lib.Attribute;
+import services.lib.Table;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -20,12 +22,14 @@ public class ConexionOracle {
 
     private static Connection conn;
     
-    private static String USER     = "P1";
-    private static String PASSWORD = "P1";
+    private static String USER     = "HR";
+    private static String PASSWORD = "abcd14abcd";
     private static String HOST     = "localhost";
     private static String PORT     = "1521";
+//    private static String SID      = "XE";
+    private static String SID      = "orcl";
     
-    private static String CONN     = "jdbc:oracle:thin:@" + HOST + ":" + PORT + ":XE";
+    private static String CONN     = "jdbc:oracle:thin:@" + HOST + ":" + PORT + ":" + SID;
 
     Statement stm;
 
@@ -66,11 +70,9 @@ public class ConexionOracle {
             }
         } catch (Exception ex) {
             System.out.println("Error " + ex.toString());
-
         }
         return listTables;
     }
-    
     
     public ArrayList<Attribute> describe(String nameTable) throws SQLException {
 
@@ -92,7 +94,6 @@ public class ConexionOracle {
             }
         } catch (Exception ex) {
             System.out.println("Error " + ex.toString());
-
         }
         return listAttribute;
     }

@@ -3,8 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Main;
+package services.databases;
 
+import services.lib.Attribute;
+import services.lib.Table;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -20,7 +22,7 @@ public class ConexionMysql {
     
     private static Connection conn;
     
-    private static String nameDB   = "sistema";
+    private static String nameDB   = "feedback";
     
     private static String USER     = "root";
     private static String PASSWORD = "";
@@ -42,7 +44,6 @@ public class ConexionMysql {
             } else {
                 System.out.println("Conexion fallida!");
             }
-
         } catch (SQLException | ClassNotFoundException ex) {
             System.out.println("Error en la conexión de la base de datos" + ex.toString());
         }
@@ -55,7 +56,6 @@ public class ConexionMysql {
     public void close() {
         conn = null;
     }
-    
     
     public ArrayList<Table> show() throws SQLException {
         ArrayList<Table> listTables = new ArrayList<>();
@@ -72,7 +72,6 @@ public class ConexionMysql {
             }
         } catch (Exception ex) {
             System.out.println("Error " + ex.toString());
-
         }
         return listTables;
     }
@@ -97,7 +96,6 @@ public class ConexionMysql {
             }
         } catch (Exception ex) {
             System.out.println("Error " + ex.toString());
-
         }
         return listAttribute;
     }

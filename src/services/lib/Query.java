@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Main;
+package services.lib;
 
+import services.lib.Attribute;
 import java.util.ArrayList;
 
 /**
@@ -187,6 +188,4 @@ public class Query {
         query += "\nEND;\n";
         return query;        
     }
-
-
 }

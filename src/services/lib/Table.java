@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Main;
+package services.lib;
 
-import Main.Attribute;
+import services.lib.Attribute;
 import java.util.ArrayList;
 
 /**

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Main;
+package services.lib;
 
 import java.util.ArrayList;
 
@@ -15,11 +15,11 @@ public class CrudSQL {
     //package head    
     //package body
     //f ins, p upd, f del, f read, f all
-    static String PackageHeader(Table tabla){
+    public static String PackageHeader(Table tabla){
         return "create or replace package crud_"+tabla.getName().toLowerCase()+"\nis\n";
     }
     
-    static String InsertHeader(Table tabla){
+    public static String InsertHeader(Table tabla){
         String plantilla = "-- insert \nfunction ins( \n%s) return number";
         StringBuilder params = new StringBuilder();
         ArrayList<Attribute> attr = tabla.getAttributes();
@@ -37,7 +37,7 @@ public class CrudSQL {
         return String.format(plantilla, params.toString()).toLowerCase();
     }
     
-    static String UpdateHeader(Table tabla){
+    public static String UpdateHeader(Table tabla){
         String plantilla = "-- update \nprocedure upd (\n%s)";
         StringBuilder params = new StringBuilder();
         ArrayList<Attribute> attr = tabla.getAttributes();
@@ -55,7 +55,7 @@ public class CrudSQL {
         return String.format(plantilla, params.toString()).toLowerCase();
     }
     
-    static String DeleteHeader(Table tabla){
+    public static String DeleteHeader(Table tabla){
         String plantilla = "-- delete \nprocedure del (\n%s)";
         StringBuilder params = new StringBuilder();
         ArrayList<Attribute> attr = tabla.getAttributes();
@@ -69,7 +69,7 @@ public class CrudSQL {
         return String.format(plantilla, params.toString()).toLowerCase();
     }
     
-    static String ReadHeader(Table tabla){
+    public static String ReadHeader(Table tabla){
         String plantilla = "-- read \nfunction read (\n%s) return sys_refcursor";
         StringBuilder params = new StringBuilder();
         ArrayList<Attribute> attr = tabla.getAttributes();
@@ -83,15 +83,15 @@ public class CrudSQL {
         return String.format(plantilla, params.toString()).toLowerCase();
     }
     
-    static String ReadAllHeader(){
+    public static String ReadAllHeader(){
         return "-- all \nfunction read_all return sys_refcursor";
     }
     
-    static String PackageBody(Table tabla){
+    public static String PackageBody(Table tabla){
         return "create or replace package body crud_"+tabla.getName().toLowerCase()+"\nis\n";
     }
     
-    static String InsertBody(Table tabla){
+    public static String InsertBody(Table tabla){
         String nombreTabla = tabla.getName();
         ArrayList<Attribute> attr = tabla.getAttributes();
         int size = attr.size();
@@ -124,7 +124,7 @@ public class CrudSQL {
         return body.toString().toLowerCase();
     }
     
-    static String UpdateBody(Table tabla){
+    public static String UpdateBody(Table tabla){
         String nombreTabla = tabla.getName();
         ArrayList<Attribute> attr = tabla.getAttributes();
         int size = attr.size();
@@ -146,7 +146,7 @@ public class CrudSQL {
         return body.toString().toLowerCase();
     }
     
-    static String DeleteBody(Table tabla){
+    public static String DeleteBody(Table tabla){
         String nombreTabla = tabla.getName();
         ArrayList<Attribute> attr = tabla.getAttributes();
         StringBuilder body = new StringBuilder(CrudSQL.DeleteHeader(tabla));
@@ -162,7 +162,7 @@ public class CrudSQL {
         return body.toString().toLowerCase();
     }
     
-    static String ReadBody(Table tabla){
+    public static String ReadBody(Table tabla){
         String nombreTabla = tabla.getName();
         ArrayList<Attribute> attr = tabla.getAttributes();
         StringBuilder body = new StringBuilder(CrudSQL.ReadHeader(tabla));
@@ -181,7 +181,7 @@ public class CrudSQL {
         return body.toString().toLowerCase();
     }
     
-    static String ReadAllBody(Table tabla){
+    public static String ReadAllBody(Table tabla){
         String nombreTabla = tabla.getName();
         StringBuilder body = new StringBuilder(CrudSQL.ReadAllHeader());
         body.append("\nas \nmy_cursor sys_refcursor;\n");
